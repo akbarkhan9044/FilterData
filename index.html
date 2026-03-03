@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Filter Search</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      display: flex;
+      justify-content: center;
+      padding: 40px 16px;
+    }
+
+    .container {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      padding: 32px;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: #333;
+      text-align: center;
+    }
+
+    .search-wrapper {
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    #searchInput {
+      width: 100%;
+      padding: 10px 16px 10px 40px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    #searchInput:focus {
+      border-color: #4a90e2;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #aaa;
+      pointer-events: none;
+    }
+
+    #resultCount {
+      font-size: 0.85rem;
+      color: #888;
+      margin-bottom: 12px;
+    }
+
+    ul#itemList {
+      list-style: none;
+    }
+
+    ul#itemList li {
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      color: #444;
+      transition: background 0.15s;
+    }
+
+    ul#itemList li:nth-child(odd) {
+      background: #f9fafb;
+    }
+
+    ul#itemList li:hover {
+      background: #e8f0fe;
+    }
+
+    ul#itemList li.hidden {
+      display: none;
+    }
+
+    #noResults {
+      text-align: center;
+      color: #aaa;
+      font-size: 0.95rem;
+      padding: 20px 0;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Filter Search</h1>
+
+    <div class="search-wrapper">
+      <span class="search-icon">&#128269;</span>
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search items..."
+        aria-label="Search items"
+      />
+    </div>
+
+    <p id="resultCount"></p>
+
+    <ul id="itemList">
+      <li>Apple</li>
+      <li>Banana</li>
+      <li>Cherry</li>
+      <li>Date</li>
+      <li>Elderberry</li>
+      <li>Fig</li>
+      <li>Grape</li>
+      <li>Honeydew</li>
+      <li>Kiwi</li>
+      <li>Lemon</li>
+      <li>Mango</li>
+      <li>Nectarine</li>
+      <li>Orange</li>
+      <li>Papaya</li>
+      <li>Quince</li>
+      <li>Raspberry</li>
+      <li>Strawberry</li>
+      <li>Tangerine</li>
+      <li>Watermelon</li>
+    </ul>
+
+    <p id="noResults">No results found.</p>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById('searchInput');
+    const items = document.querySelectorAll('#itemList li');
+    const noResults = document.getElementById('noResults');
+    const resultCount = document.getElementById('resultCount');
+
+    function updateCount(visible, total) {
+      resultCount.textContent = `Showing ${visible} of ${total} items`;
+    }
+
+    updateCount(items.length, items.length);
+
+    searchInput.addEventListener('input', function () {
+      const query = this.value.trim().toLowerCase();
+      let visibleCount = 0;
+
+      items.forEach(function (item) {
+        const matches = item.textContent.toLowerCase().includes(query);
+        item.classList.toggle('hidden', !matches);
+        if (matches) visibleCount++;
+      });
+
+      noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+      updateCount(visibleCount, items.length);
+    });
+  </script>
+</body>
+</html>
